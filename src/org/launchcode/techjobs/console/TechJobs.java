@@ -1,8 +1,6 @@
 package org.launchcode.techjobs.console;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -61,7 +59,7 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+                    printJobs(JobData.findByValue(searchTerm));
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
@@ -111,6 +109,51 @@ public class TechJobs {
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+        /* check to see if results are empty
+        if so, print an appropriate message
+         */
+        if (someJobs.isEmpty()) {
+            System.out.println("No jobs match selected criteria.");
+        } else {
+            System.out.println("*****");
+            for (Map<String, String> posting : someJobs) {
+                for (Map.Entry<String, String> field : posting.entrySet()) {
+                    System.out.println(field.getKey() + ": " + field.getValue());
+                }
+                System.out.println("*****");
+            };
+        };
+
+            /*for (int i=0; i < someJobs.size(); i++) {
+                Iterator it = someJobs.get(i).entrySet().iterator();
+                System.out.println("*****");
+                while (it.hasNext()) {
+                    Map.Entry jobDataReturned = (Map.Entry)it.next();
+                    if (jobDataReturned.getKey() == "core competency") {
+                        System.out.println(jobDataReturned.getKey() + ": " + jobDataReturned.getValue());
+                        System.out.println("*****");
+                    } else {
+                        System.out.println(jobDataReturned.getKey() + ": " + jobDataReturned.getValue());
+                    };
+                    it.remove();
+                }
+            }/*
+            /*for (int i = 0; i < someJobs.size(); i++) {
+                HashMap<String, String> jobDataReturned = (HashMap<String, String>) someJobs.get(i);
+                Set<String> key = jobDataReturned.keySet();
+                Iterator it = key.iterator();
+                while (it.hasNext()) {
+                    String left = (String)it.next();
+                    String right = (String) jobDataReturned.get(left);
+                    System.out.println("*****");
+                    System.out.println(left + ": " + right);
+                    System.out.println("*****");
+                    it.remove();
+                };
+            };*/
+
+            /* if results are not empty, create a nested loop to loop over each HashMap until the end of the results*/
+
+        /*System.out.println("*****");*/
     }
 }

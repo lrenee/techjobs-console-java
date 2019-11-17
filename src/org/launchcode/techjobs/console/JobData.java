@@ -7,9 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -43,7 +41,9 @@ public class JobData {
             }
         }
 
-        return values;
+        Collections.sort(values);
+
+        return (values);
     }
 
     public static ArrayList<HashMap<String, String>> findAll() {
@@ -51,7 +51,9 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        return allJobs;
+        ArrayList<HashMap<String, String>> copyAllJobs = new ArrayList<>(allJobs);
+
+        return copyAllJobs;
     }
 
     /**
@@ -76,9 +78,47 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
+        }
+
+        return jobs;
+    }
+
+
+
+    /**
+     * Returns results of search the jobs data by key/value, using
+     * inclusion of the search term but without needing to specify a column.
+     *
+     * For example, searching for employer "Enterprise" will include results
+     * with "Enterprise Holdings, Inc".
+     *
+     * @param value Value of the field to search for
+     * @return List of all jobs matching the criteria
+     */
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> posting : allJobs) {
+
+            String match = "N";
+
+            for (String field : posting.values()) {
+                if (field.toLowerCase().contains(value.toLowerCase())) {
+                    match = "Y";
+                }
+            }
+
+            if (match == "Y") {
+                jobs.add(posting);
+            }
+
         }
 
         return jobs;
